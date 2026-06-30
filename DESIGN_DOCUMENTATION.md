@@ -39,9 +39,8 @@ This website reimagines Pink Panther as a premium fashion-forward lifestyle bran
 ### 1. Homepage
 **Hero Carousel**
 - Full-screen cinematic autoplay carousel
-- 5 slides rotating every 6 seconds
-- Smooth crossfade transitions (1.5s duration)
-- Subtle image scaling (100% to 105%)
+- 6 slides rotating every 6 seconds
+- Smooth flow transitions (2s duration)
 - Minimal overlay navigation with CTA buttons
 
 **Music Module**
@@ -172,15 +171,18 @@ This website reimagines Pink Panther as a premium fashion-forward lifestyle bran
 ## Visual Assets
 
 ### Hero Carousel Images
-1. **Coffee Espresso**: Premium espresso shots on marble surface
-2. **Community Gathering**: Young people socializing in modern space
-3. **Fresh Juice**: Cold-pressed juice preparation
-4. **Music Culture**: Vinyl records and headphones arrangement
-5. **Lifestyle Editorial**: Artistic lifestyle composition
+Hero images are stored in `/client/public/images` and referenced by `HeroCarousel.tsx` with public URLs:
+
+1. `/images/ad1.png` - Coffee, juice, and culture campaign
+2. `/images/ad3.png` - Community and connection campaign
+3. `/images/ad5.jpg` - New-generation lifestyle campaign
+4. `/images/ad2.png` - Fresh juice campaign
+5. `/images/ad4.png` - Music culture campaign
+6. `/images/ad.png` - Lifestyle editorial campaign
 
 All images are:
 - High-resolution (2560x1440px)
-- Optimized for web (webp format)
+- Optimized for web delivery
 - Bright, minimalist Scandinavian aesthetic
 - Editorial magazine quality
 - No text overlays
@@ -255,9 +257,15 @@ Music pages link to Spotify. Update the href values with actual playlist URLs fr
 
 ## Deployment
 
-The website is ready for deployment to Manus hosting. All assets are optimized and the design is fully responsive across all device sizes.
+The website is ready for deployment. Use pnpm for dependency installation and production builds:
 
-For custom domain setup or advanced features, refer to the Manus documentation.
+```bash
+pnpm install
+pnpm build
+pnpm start
+```
+
+The project uses `pnpm-lock.yaml`; do not commit `package-lock.json`.
 
 ---
 

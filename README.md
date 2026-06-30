@@ -1,108 +1,62 @@
-# PinkPanter
+# Pink Panther
 
-PinkPanter is a modern, responsive web application built with React and Vite. The project focuses on delivering a clean user interface, fast performance, and an engaging user experience. It also includes an interactive map powered by Leaflet and OpenStreetMap.
+Pink Panther is a React, Vite, TypeScript, Tailwind CSS, and Express application for a premium lifestyle cafe website. It includes the homepage hero carousel, product pages, music, locations, rewards, and supporting server code.
 
-## Features
+## Requirements
 
-* 🎨 Modern and responsive design
-* ⚡ Fast performance with Vite
-* 🧩 Component-based React architecture
-* 🗺️ Interactive map using React Leaflet
-* 📱 Mobile-friendly layout
-* 💨 Styled with Tailwind CSS
-
-## Tech Stack
-
-* React
-* Vite
-* Tailwind CSS
-* React Leaflet
-* Leaflet
-* JavaScript (ES6+)
+- Node.js 20 or newer
+- pnpm 10.x
 
 ## Installation
 
-Clone the repository:
+```bash
+pnpm install
+```
+
+## Development
 
 ```bash
-git clone https://github.com/your-username/pinkpanter.git
+pnpm dev
 ```
 
-Navigate to the project directory:
+The dev server runs through the Express entrypoint and serves the Vite client.
+
+## Production Build
 
 ```bash
-cd pinkpanter
+pnpm build
 ```
 
-Install dependencies:
+The build outputs the client to `dist/public` and the server bundle to `dist/index.js`.
+
+## Production Start
 
 ```bash
-npm install
+pnpm start
 ```
 
-Start the development server:
+## Quality Checks
 
 ```bash
-npm run dev
+pnpm check
+pnpm test
 ```
 
-Open your browser and visit:
+## Hero Carousel Images
 
-```
-http://localhost:5173
-```
+Hero carousel images live in `client/public/images` and are referenced from `client/src/components/HeroCarousel.tsx` with public paths such as `/images/ad1.png`.
 
-## Build for Production
+Current hero images:
 
-Create a production build:
+- `ad1.png`
+- `ad3.png`
+- `ad5.jpg`
+- `ad2.png`
+- `ad4.png`
+- `ad.png`
 
-```bash
-npm run build
-```
-
-Preview the production build:
-
-```bash
-npm run preview
-```
-
-## Project Structure
-
-```text
-src/
-├── assets/
-├── components/
-├── pages/
-├── App.jsx
-├── main.jsx
-└── index.css
-```
-
-## Map Integration
-
-The application uses **React Leaflet** with **OpenStreetMap** to provide an interactive map experience without requiring a Google Maps API key.
+After changing images, run `pnpm build` before redeploying so Vite validates the app and copies the public assets into `dist/public/images`.
 
 ## Deployment
 
-This project can be deployed on platforms such as:
-
-* Railway
-* Vercel
-* Netlify
-
-## Future Improvements
-
-* Search and filtering
-* User authentication
-* Backend integration
-* API connectivity
-* Dark mode
-* Performance optimizations
-
-## Author
-
-Created by **Tonis** using React, Vite, Tailwind CSS, and Leaflet.
-
-## License
-
-This project is available for educational and portfolio purposes.
+Use pnpm for installs and builds. Do not commit `package-lock.json`; this project uses `pnpm-lock.yaml` as the single dependency lockfile.

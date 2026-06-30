@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 
 /**
  * Hero Carousel Component
- * Cinematic autoplay carousel with smooth Flow transition
+ * Cinematic autoplay carousel with smooth flow transition
  * Design: Full-screen hero with minimal overlay navigation
- * Animations: Smooth Flow transition (2s), slide-in effect
+ * Animations: Smooth flow transition (2s), slide-in effect
  */
 
 interface CarouselSlide {
@@ -26,13 +26,13 @@ const slides: CarouselSlide[] = [
     headline: 'Made For Connection.',
     image: '/images/ad3.png',
     description: 'Young people socializing',
-  }
-   {
+  },
+  {
     id: 6,
     headline: 'New generation.',
     image: '/images/ad5.jpg',
-    description: 'Young people socializing',
-  },,
+    description: 'Next-generation lifestyle campaign',
+  },
   {
     id: 3,
     headline: 'Get crazy.',
