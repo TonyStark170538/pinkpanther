@@ -18,31 +18,37 @@ const slides: CarouselSlide[] = [
   {
     id: 1,
     headline: 'Coffee. Juice. Culture.',
-    image: '/images/4.jpg',
+    image: '/images/ad1.png',
     description: 'Freshly prepared espresso shots',
   },
   {
     id: 2,
     headline: 'Made For Connection.',
-    image: '/images/3.jpg',
+    image: '/images/ad3.png',
     description: 'Young people socializing',
-  },
+  }
+   {
+    id: 6,
+    headline: 'New generation.',
+    image: '/images/ad5.jpg',
+    description: 'Young people socializing',
+  },,
   {
     id: 3,
-    headline: 'Fresh Every Day.',
-    image: '/images/2.jpg',
+    headline: 'Get crazy.',
+    image: '/images/ad2.png',
     description: 'Fresh juice preparation',
   },
   {
     id: 4,
     headline: 'Listen To What We Listen To.',
-    image: '/images/6.jpg',
+    image: '/images/ad4.png',
     description: 'Music and playlist culture',
   },
   {
     id: 5,
     headline: 'More Than Juice.',
-    image: '/images/5.jpg',
+    image: '/images/ad.png',
     description: 'Editorial lifestyle campaign',
   },
 ];
