@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pink Panther — Message Assistant</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #e8497a;
+    --pink-light: #fdeef4;
+    --pink-mid: #f5a8c3;
+    --dark: #1a0a12;
+    --dark-2: #2e1020;
+    --gray: #8a7a82;
+    --gray-light: #f7f3f5;
+    --white: #ffffff;
+    --radius: 14px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-light);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2.5rem 1rem 4rem;
+    color: var(--dark);
+  }
+
+  .wrap { width: 100%; max-width: 660px; }
+
+  /* HEADER */
+  .hero {
+    background: var(--dark);
+    border-radius: 20px;
+    padding: 2.25rem 2rem 2rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: var(--pink);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30px;
+    width: 120px; height: 120px;
+    background: var(--pink-mid);
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .logo-mark {
+    width: 44px; height: 44px;
+    background: var(--pink);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .logo-text p {
+    font-size: 12px;
+    color: var(--pink-mid);
+    font-weight: 400;
+    margin-top: 1px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  /* MAIN CARD */
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.75rem;
+    border: 1px solid rgba(232,73,122,0.1);
+  }
+
+  .field-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 110px;
+    resize: vertical;
+    border: 1.5px solid #ede5e9;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--dark);
+    background: var(--gray-light);
+    line-height: 1.65;
+    transition: border-color 0.15s;
+  }
+
+  textarea:focus {
+    outline: none;
+    border-color: var(--pink);
+    background: white;
+  }
+
+  textarea::placeholder { color: #c2aeb8; }
+
+  /* EXAMPLES */
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 1.25rem;
+    align-items: center;
+  }
+
+  .ex-label { font-size: 11px; color: #c2aeb8; }
+
+  .ex-btn {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #ede5e9;
+    background: white;
+    color: var(--gray);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.12s;
+  }
+
+  .ex-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--pink);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+  }
+
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* ERROR */
+  .error-box {
+    margin-top: 1rem;
+    background: #fff0f4;
+    border: 1.5px solid #fbc8d8;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #c0294f;
+    display: none;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1.5px solid #f5edf1;
+    margin: 1.75rem 0;
+  }
+
+  /* RESULT */
+  #result { display: none; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-booking   { background: #eef0fb; color: #3a46b5; }
+  .tag-complaint { background: #fff0f4; color: #c0294f; }
+  .tag-menu      { background: #eef9f2; color: #1a7a45; }
+  .tag-general   { background: var(--pink-light); color: var(--pink); }
+  .tag-needs_human { background: #fff5e6; color: #b86200; }
+
+  .result-card {
+    background: var(--gray-light);
+    border: 1.5px solid #f0e8ec;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+
+  .result-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
+
+  .reply-text {
+    font-size: 14px;
+    color: var(--dark);
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  .human-text {
+    font-size: 14px;
+    color: #b86200;
+    line-height: 1.7;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .copy-btn, .clear-btn {
+    font-size: 13px;
+    padding: 7px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #ede5e9;
+    background: white;
+    color: var(--gray);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.12s;
+  }
+
+  .copy-btn:hover { border-color: var(--pink); color: var(--pink); }
+  .clear-btn:hover { border-color: var(--dark); color: var(--dark); }
+
+  /* SPINNER */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 12px;
+    color: #c2aeb8;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="logo-row">
+        <div class="logo-mark">🩷</div>
+        <div class="logo-text">
+          <h1>Pink Panther</h1>
+          <p>Customer Message Assistant</p>
+        </div>
+      </div>
+      <p class="hero-desc">Paste any customer message — bookings, complaints, menu questions — and get an instant on-brand reply.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field-label">Customer message</div>
+    <textarea id="msg" placeholder="Hi, I'd like to book a table for Saturday evening for 4 people..."></textarea>
+
+    <div class="examples">
+      <span class="ex-label">Try:</span>
+      <button class="ex-btn" onclick="setEx('Can I book a table for 6 people this Saturday at 7pm?')">Booking</button>
+      <button class="ex-btn" onclick="setEx('My coffee was cold and the wait was way too long. Really disappointed.')">Complaint</button>
+      <button class="ex-btn" onclick="setEx('Do you have any oat milk options? I am also gluten intolerant.')">Menu & allergies</button>
+      <button class="ex-btn" onclick="setEx('What time do you open on Sundays?')">Opening hours</button>
+      <button class="ex-btn" onclick="setEx('This is absolutely unacceptable, I want a full refund immediately or I am calling consumer services.')">Tricky one</button>
+    </div>
+
+    <button class="submit-btn" id="analyseBtn" onclick="analyse()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+      <span id="btnLabel">Generate reply</span>
+    </button>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <div id="result">
+      <hr class="divider">
+      <div id="tagRow"></div>
+      <div class="result-card">
+        <div class="result-label" id="resultLabel">Suggested reply</div>
+        <div id="replyText" class="reply-text"></div>
+      </div>
+      <div class="action-row">
+        <button class="copy-btn" id="copyBtn" onclick="copyReply()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy reply
+        </button>
+        <button class="clear-btn" onclick="clearAll()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer">Pink Panther Message Assistant · Powered by Claude AI</p>
+</div>
+
+<script>
+function setEx(text) {
+  document.getElementById('msg').value = text;
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('btnLabel').textContent = 'Generate reply';
+}
+
+function clearAll() {
+  document.getElementById('msg').value = '';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('btnLabel').textContent = 'Generate reply';
+  document.getElementById('analyseBtn').disabled = false;
+}
+
+async function analyse() {
+  const msg = document.getElementById('msg').value.trim();
+  if (!msg) return;
+
+  const btn = document.getElementById('analyseBtn');
+  const btnLabel = document.getElementById('btnLabel');
+  const errorBox = document.getElementById('errorBox');
+
+  btn.disabled = true;
+  btnLabel.innerHTML = '<span class="spinner"></span>';
+  errorBox.style.display = 'none';
+  document.getElementById('result').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg })
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      errorBox.textContent = '⚠ ' + data.error;
+      errorBox.style.display = 'block';
+    } else {
+      renderResult(data);
+    }
+  } catch(e) {
+    errorBox.textContent = '⚠ Could not reach the server. Make sure it is running.';
+    errorBox.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btnLabel.textContent = 'Generate again';
+}
+
+const tags = {
+  booking:     { label: '📅 Booking',          cls: 'tag-booking' },
+  complaint:   { label: '⚠ Complaint',         cls: 'tag-complaint' },
+  menu:        { label: '☕ Menu & allergies',  cls: 'tag-menu' },
+  general:     { label: '💬 General enquiry',   cls: 'tag-general' },
+  needs_human: { label: '🙋 Needs a human',     cls: 'tag-needs_human' }
+};
+
+function renderResult(json) {
+  const cat = json.category || 'needs_human';
+  const tag = tags[cat] || tags.needs_human;
+
+  document.getElementById('tagRow').innerHTML =
+    `<span class="tag ${tag.cls}">${tag.label}</span>`;
+
+  const resultLabel = document.getElementById('resultLabel');
+  const replyText = document.getElementById('replyText');
+  const copyBtn = document.getElementById('copyBtn');
+
+  if (json.needs_human) {
+    resultLabel.textContent = 'Handle personally';
+    replyText.className = 'human-text';
+    replyText.textContent = '⚠ ' + (json.human_reason || 'This message needs personal attention from your team.');
+    copyBtn.style.display = 'none';
+  } else {
+    resultLabel.textContent = 'Suggested reply';
+    replyText.className = 'reply-text';
+    replyText.textContent = json.reply;
+    copyBtn.style.display = 'inline-flex';
+  }
+
+  document.getElementById('result').style.display = 'block';
+}
+
+function copyReply() {
+  const text = document.getElementById('replyText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.innerHTML = '✓ Copied!';
+    btn.style.borderColor = '#e8497a';
+    btn.style.color = '#e8497a';
+    setTimeout(() => {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy reply';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
