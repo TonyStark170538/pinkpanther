@@ -1,0 +1,39 @@
+SAST&SCA
+CodeQL “Missing rate limiting” alerts:
+
+- server/index.ts serves static files and sends index.html for unmatched page routes. It does not appear in the current package.json build or start scripts. 
+  GitHub+1
+- The active server entry point is server/_core/index.ts. It registers the OAuth routes, storage proxy and tRPC API, but I don't see rate-limiting middleware applied there. It also allows JSON and URL-encoded request bodies up to 50 MB. 
+  GitHub
+- server/_core/vite.ts handles Vite middleware and static-file serving / SPA fallback. Those handlers are not the same thing as sensitive API operations. 
+  GitHub
+
+That means:
+1. server/index.ts: the alert may concern an unused or legacy server entry point. Verify whether anything actually deploys or imports it before treating it as a production exposure.
+2. server/_core/vite.ts: rate-limiting every static page request is usually not the priority. The important question is whether sensitive API routes are protected.
+3. Active API server: the absence of rate limiting at the Express entry point deserves further investigation, especially for authentication, OAuth-related operations, and any future order or account-changing endpoints.
+
+A CodeQL alert is a static-analysis finding, not proof that an attacker can successfully abuse the application. Equally, a few successful health checks don't prove that rate limiting exists.
+
+
+DAST
+Burp results:
+
+Test	                                     Result	                           Interpretation
+system.health with a valid timestamp	     200 OK, {"ok":true}	             The tRPC endpoint is reachable and the health procedure works.
+Negative timestamp	                       400 Bad Request, too_small	       Zod correctly rejects values below zero.
+String instead of number	                 400 Bad Request, invalid_type	   Zod correctly enforces the expected input type.
+auth.me without a session	                 200 OK, null	                     No user information was returned to the unauthenticated request. This is consistent with the public procedure's implementation.
+POST without a valid request body	         400 Bad Request, generic HTML	   The request was rejected. The generic error response does not, by itself, indicate a vulnerability.
+
+Current finding: The first three tests demonstrate positive input-validation behavior. The auth.me result is also reassuring, although it doesn't establish whether authenticated user data is correctly protected in every other procedure.
+One detail worth recording: your responses disclose X-Powered-By: Express and X-Render-Origin-Server: Render. These identify parts of the technology stack. That's useful reconnaissance information, but not a vulnerability by itself.
+
+Finding	                            Evidence	                                                    Current assessment
+Input validation	                  Negative and string timestamps rejected with HTTP 400	        Working as expected
+Unauthenticated user information	  auth.me returned null	                                        No disclosure observed
+Rate limiting	                      CodeQL alerts; no rate-limit behavior established yet	        Needs verification
+Technology disclosure  	            Express and Render headers exposed	                          Informational
+Error handling	                    Invalid POST returned generic HTML error	                    No sensitive details observed
+
+One additional issue to investigate later: the 50 MB request-body limit. A large body limit can increase resource-consumption risk, especially if expensive endpoints accept large payloads.
